@@ -129,13 +129,7 @@ class ProductDetails extends React.Component {
             parameters: {id: params.productId, allImages: true}
         })
 
-        // From product, get the promotions
-        const promotion = product.productPromotions[0].promotionId
-        const promotions = await api.shopperPromotions.getPromotions({
-            parameters: {ids: promotion}
-        })
-
-        return {product: parseProduct(product), promotionMsg: promotions.data[0].calloutMsg}
+        return {product: parseProduct(product), promotions: product.productPromotions}
     }
 
     toggleShippingSheet() {
@@ -209,9 +203,12 @@ class ProductDetails extends React.Component {
                     </Helmet>
                 )}
 
-                {promotionMsg && (
-                    <h1>{promotionMsg}</h1>
-                )}
+                {promotions && (
+                    promotions.map(iterator) => (
+						<h1>{iterator.calloutMsg}</h1>
+					)})
+                }
+
 
                 {showErrorMessage ? (
                     <h2 className="u-margin-top-lg">{errorMessage}</h2>
