@@ -139,7 +139,7 @@ class ProductDetails extends React.Component {
     render() {
         const {errorMessage} = this.props
         let product = this.props.product
-        let promotionMsg = this.props.promotionMsg
+        let promotions = this.props.promotions
 
         const {name, price, variationProperties} = product || {}
 
@@ -204,10 +204,10 @@ class ProductDetails extends React.Component {
                 )}
 
                 {promotions && (
-                    promotions.map(iterator) => (
-						<h1>{iterator.calloutMsg}</h1>
-					)})
-                }
+                    promotions.map(({calloutMsg}) => (
+						<h1>{calloutMsg}</h1>
+					))
+                )}
 
 
                 {showErrorMessage ? (
