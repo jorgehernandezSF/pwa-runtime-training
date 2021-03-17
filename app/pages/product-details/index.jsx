@@ -20,7 +20,7 @@ import Ratio from 'pwa-kit-react-sdk/dist/components/ratio'
 import Sheet from 'pwa-kit-react-sdk/dist/components/sheet'
 import SkeletonBlock from 'pwa-kit-react-sdk/dist/components/skeleton-block'
 import {Swatch, SwatchItem} from 'pwa-kit-react-sdk/dist/components/swatch'
-
+import GiftCheckbox from '../../components/gift-checkbox'
 import EmailSubscribe from '../../components/email-subscribe'
 import {Mobile, Tablet, Desktop} from '../../components/media-queries'
 
@@ -203,13 +203,6 @@ class ProductDetails extends React.Component {
                     </Helmet>
                 )}
 
-                {promotions && (
-                    promotions.map(({calloutMsg}) => (
-						<h1>{calloutMsg}</h1>
-					))
-                )}
-
-
                 {showErrorMessage ? (
                     <h2 className="u-margin-top-lg">{errorMessage}</h2>
                 ) : (
@@ -300,6 +293,15 @@ class ProductDetails extends React.Component {
                                         ))}
                                 </div>
                             </form>
+
+                            {promotions && (
+                                promotions.map(({calloutMsg}) => (
+                                    <h2>{calloutMsg}</h2>
+                                ))
+                            )}
+
+                            <GiftCheckbox/>
+
                         </div>
                     </div>
                 )}
