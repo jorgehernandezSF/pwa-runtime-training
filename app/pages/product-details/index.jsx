@@ -294,14 +294,12 @@ class ProductDetails extends React.Component {
                                 </div>
                             </form>
 
-                            {promotions && (
-                                promotions.map(({}) => (
-                                    <h1 key={promotionId}>{calloutMsg}<h1>
-                                ))
-                            )}
+                            {promotions &&
+                                promotions.map(({promotionId, calloutMsg}) => (
+                                    <h1 key={promotionId}>{calloutMsg}</h1>
+                                ))}
 
                             <GiftCheckbox />
-
                         </div>
                     </div>
                 )}

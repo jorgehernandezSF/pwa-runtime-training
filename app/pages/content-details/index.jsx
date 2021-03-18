@@ -19,8 +19,8 @@ const ContentDetails = ({content, error}) => {
 ContentDetails.getProps = async ({params, res}) => {
     let content, error
     const result = await fetch (
-        `http://localhost:3000/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_10/content/${params.id}?client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
-        //`${getProtocolHostAndPort()}/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_4/content/${params.id}?client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
+        // `http://localhost:3000/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_10/content/${params.id}?client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
+        `${getProtocolHostAndPort()}/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_4/content/${params.id}?client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
     )
 
     if (result.ok) {

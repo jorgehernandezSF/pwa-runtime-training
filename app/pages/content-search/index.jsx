@@ -33,8 +33,8 @@ ContentSearch.getTemplateName = () => 'content-search';
 ContentSearch.getProps = async () => {
     let contentResult
     const res = await fetch(
-        `http://localhost:3000/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_2/content_search?q=about&client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
-        //`${getProtocolHostAndPort()}/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_4/content_search?q=about&client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
+        // `http://localhost:3000/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_2/content_search?q=about&client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
+        `${getProtocolHostAndPort()}/mobify/proxy/ocapi/s/RefArch/dw/shop/v20_4/content_search?q=about&client_id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`
     )
 
     if (res.ok) {
