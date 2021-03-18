@@ -29,4 +29,4 @@ const GiftCheckbox = () => {
     )
 }
 
-export default GiftCheckbox;
+export default GiftCheckbox
