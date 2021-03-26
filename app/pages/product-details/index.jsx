@@ -1,7 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-//import { ListTile, Button } from '@chakra-ui/react'
+import getIdsFromArrayOfObject from '../../utils/utils'
+import {
+    Tooltip,
+    Spinner,
+    Text
+} from '@chakra-ui/react'
+
+
+const promotionTooltip = () => {
+    const [promotionDetails, setPromotionDetails] = useState()
+    const onHoverHandler = () => {
+        if (promotionDetails) {
+            return
+        }
+        const getPromotionDetails = async () => {
+            // api will have to be created before have because we aren't in `getProps`
+            const promotion = await api.shopperPromotions.getPromotions({
+                parameters: { ids: product.productPromotions[0].promotionId }
+            })
+            setPromotionDetails(promotion.details)
+        }
+        getPromotionDetails()
+    }
+    return (
+        <div>
+            <Tooltip label={promotionDetails || <Spinner />} onOpen={onHoverHandler}>
+                <Text>Show Promo</Text>
+            </Tooltip>
+        </div>
+    )
+}
+
 
 class ProductDetails extends React.Component {
     constructor(props) {
@@ -23,24 +54,34 @@ class ProductDetails extends React.Component {
 
     static async getProps({ params, api }) {
 
-        await api.auth.login()
-
         const product = await api.shopperProducts.getProduct({
-            parameters: { id: "25752986M", allImages: true }
+            parameters: { id: params.productId, allImages: true }
         })
 
-        debugger
-        return { product: product, promotions: product.productPromotions }
+        getIdsFromArrayOfObject(product.productPromotions, "promotionId")
+
+        // Get the promotions for the product
+        const promotions = await api.shopperPromotions.getPromotions({
+            parameters: { ids: product.productPromotions[0].promotionId }
+        })
+
+        //Notice that I return the tooltipContent
+        return {
+            product: product,
+            promotions: product.productPromotions,
+            tooltipContent: promotions.data[0].details }
     }
 
     render() {
         let product = this.props.product
         let promotions = this.props.promotions
+        let tooltipContent = this.props.tooltipContent
 
         return (
             <div className="t-product-details" itemScope itemType="http://schema.org/Product">
 
-                <h1>Why does this show? {product.name}</h1>
+                <h1>This is the product: {product.name}</h1>
+                <br></br>
                 {product && (
                     <Helmet>
                         <title>{product.name}</title>
@@ -48,22 +89,34 @@ class ProductDetails extends React.Component {
                     </Helmet>
                 )}
 
+                <h2>These are the promotions (if any):</h2>
                 {promotions &&
                     promotions.map(({ promotionId, calloutMsg }) => (
-                        <h1 key={promotionId}>{calloutMsg}</h1>
-                    ))
-                }
-
-                {/* <ListTile className="pw--instructional-block">
-                        <div className="u-margin-bottom-lg">Set up a modal with with example:</div>
-
-                        <Button
-                            className="t-product-details__modal-button pw--primary qa-modal-button"
-                            onClick={this.toggleShippingSheet.bind(this)}
+                        <Tooltip
+                            key={promotionId}
+                            label={tooltipContent || <Spinner />}
+                            aria-label="Promotion details"
                         >
-                            Modal Button
-                        </Button>
-                    </ListTile> */}
+                            <Text>{calloutMsg}</Text>
+                        </Tooltip>
+                    ))}
+                <br></br>
+
+                {/* upon hover on a promotion
+                1a. open a tooltip, initially show the data we have: the promotionID
+                onOpen check state set, call intermediate function
+                make call
+                spinner
+                show details
+                1b. add event handler that calls the shopperPromotions.getPromotion API which needs the promotionID (see above in getProps for an example of the call)
+                   const product = await api.shopperPromotions.getPromotions({
+                        parameters: {ids: promotionId}
+                    })
+                2. Replace the tooltip with the details returned.
+                */}
+                {/* {tooltipContent &&
+                    <h1>This is the tooltip content: {tooltipContent}</h1>
+                } */}
             </div >
         )
     }

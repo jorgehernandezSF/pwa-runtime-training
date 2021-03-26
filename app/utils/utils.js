@@ -23,3 +23,16 @@ export const watchOnlineStatus = (callback, win = window) => {
     }
     return unsubscribe
 }
+
+/**
+ * Returns the a comma-separated list of ids
+ * @function getIdsFromArrayOfObject
+ * @returns {string}
+ */
+export function getIdsFromArrayOfObject(arrayIn, idProperty) {
+    let arrayOut = []
+
+    arrayOut = arrayIn.map(idProperty => idProperty)
+
+    return arrayOut
+}
