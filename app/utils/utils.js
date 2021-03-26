@@ -24,15 +24,13 @@ export const watchOnlineStatus = (callback, win = window) => {
     return unsubscribe
 }
 
+
 /**
- * Returns the a comma-separated list of ids
- * @function getIdsFromArrayOfObject
+ * Returns a comma-separated list of ids from an array of objects
+ * @function pluckIds
  * @returns {string}
  */
-export function getIdsFromArrayOfObject(arrayIn, idProperty) {
-    let arrayOut = []
-
-    arrayOut = arrayIn.map(idProperty => idProperty)
-
-    return arrayOut
+export function pluckIds(arrayIn, idProperty) {
+    // Yep, inspired by https://underscorejs.org/#pluck
+    return arrayIn.map(o => o[idProperty]).toString()
 }

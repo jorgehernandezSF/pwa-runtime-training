@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-import getIdsFromArrayOfObject from '../../utils/utils'
+import {pluckIds} from '../../utils/utils'
 import {
     Tooltip,
     Spinner,
@@ -58,18 +58,19 @@ class ProductDetails extends React.Component {
             parameters: { id: params.productId, allImages: true }
         })
 
-        getIdsFromArrayOfObject(product.productPromotions, "promotionId")
+        const promotionIds = pluckIds(product.productPromotions, "promotionId")
 
         // Get the promotions for the product
         const promotions = await api.shopperPromotions.getPromotions({
-            parameters: { ids: product.productPromotions[0].promotionId }
+            parameters: {ids: promotionIds}
         })
 
         //Notice that I return the tooltipContent
         return {
             product: product,
-            promotions: product.productPromotions,
-            tooltipContent: promotions.data[0].details }
+            promotions: promotions.data,
+            tooltipContent: promotions.data[0].details
+        }
     }
 
     render() {
@@ -91,33 +92,12 @@ class ProductDetails extends React.Component {
 
                 <h2>These are the promotions (if any):</h2>
                 {promotions &&
-                    promotions.map(({ promotionId, calloutMsg }) => (
-                        <Tooltip
-                            key={promotionId}
-                            label={tooltipContent || <Spinner />}
-                            aria-label="Promotion details"
-                        >
+                    promotions.map(({id, calloutMsg, details}) => (
+                        <Tooltip key={id} label={details} aria-label="Promotion details">
                             <Text>{calloutMsg}</Text>
                         </Tooltip>
                     ))}
-                <br></br>
-
-                {/* upon hover on a promotion
-                1a. open a tooltip, initially show the data we have: the promotionID
-                onOpen check state set, call intermediate function
-                make call
-                spinner
-                show details
-                1b. add event handler that calls the shopperPromotions.getPromotion API which needs the promotionID (see above in getProps for an example of the call)
-                   const product = await api.shopperPromotions.getPromotions({
-                        parameters: {ids: promotionId}
-                    })
-                2. Replace the tooltip with the details returned.
-                */}
-                {/* {tooltipContent &&
-                    <h1>This is the tooltip content: {tooltipContent}</h1>
-                } */}
-            </div >
+            </div>
         )
     }
 }
