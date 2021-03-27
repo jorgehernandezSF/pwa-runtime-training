@@ -30,7 +30,7 @@ export const watchOnlineStatus = (callback, win = window) => {
  * @function pluckIds
  * @returns {string}
  */
-export function pluckIds(arrayIn, idProperty) {
+export const pluckIds = (arrayIn, idProperty) => {
     // Yep, inspired by https://underscorejs.org/#pluck
-    return arrayIn.map(o => o[idProperty]).toString()
+    return arrayIn.map(iterator => iterator[idProperty]).toString()
 }

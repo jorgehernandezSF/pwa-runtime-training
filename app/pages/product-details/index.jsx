@@ -2,37 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import {pluckIds} from '../../utils/utils'
-import {
-    Tooltip,
-    Spinner,
-    Text
-} from '@chakra-ui/react'
+import {Tooltip, Spinner, Text} from '@chakra-ui/react'
 
-
-const promotionTooltip = () => {
-    const [promotionDetails, setPromotionDetails] = useState()
-    const onHoverHandler = () => {
-        if (promotionDetails) {
-            return
-        }
-        const getPromotionDetails = async () => {
-            // api will have to be created before have because we aren't in `getProps`
-            const promotion = await api.shopperPromotions.getPromotions({
-                parameters: { ids: product.productPromotions[0].promotionId }
-            })
-            setPromotionDetails(promotion.details)
-        }
-        getPromotionDetails()
-    }
-    return (
-        <div>
-            <Tooltip label={promotionDetails || <Spinner />} onOpen={onHoverHandler}>
-                <Text>Show Promo</Text>
-            </Tooltip>
-        </div>
-    )
-}
-
+// const promotionTooltip = () => {
+//     const [promotionDetails, setPromotionDetails] = useState()
+//     const onHoverHandler = () => {
+//         if (promotionDetails) {
+//             return
+//         }
+//         const getPromotionDetails = async () => {
+//             // api will have to be created before have because we aren't in `getProps`
+//             const promotion = await api.shopperPromotions.getPromotions({
+//                 parameters: {ids: product.productPromotions[0].promotionId}
+//             })
+//             setPromotionDetails(promotion.details)
+//         }
+//         getPromotionDetails()
+//     }
+//     return (
+//         <div>
+//             <Tooltip label={promotionDetails || <Spinner />} onOpen={onHoverHandler}>
+//                 <Text>Show Promo</Text>
+//             </Tooltip>
+//         </div>
+//     )
+// }
 
 class ProductDetails extends React.Component {
     constructor(props) {
@@ -48,35 +42,31 @@ class ProductDetails extends React.Component {
         return 'exampleProductDetails'
     }
 
-    static shouldGetProps({ previousParams, params }) {
+    static shouldGetProps({previousParams, params}) {
         return !previousParams || previousParams.productId !== params.productId
     }
 
-    static async getProps({ params, api }) {
-
+    static async getProps({params, api}) {
         const product = await api.shopperProducts.getProduct({
-            parameters: { id: params.productId, allImages: true }
+            parameters: {id: params.productId, allImages: true}
         })
 
-        const promotionIds = pluckIds(product.productPromotions, "promotionId")
+        const promotionIds = pluckIds(product.productPromotions, 'promotionId')
 
         // Get the promotions for the product
         const promotions = await api.shopperPromotions.getPromotions({
             parameters: {ids: promotionIds}
         })
 
-        //Notice that I return the tooltipContent
         return {
             product: product,
-            promotions: promotions.data,
-            tooltipContent: promotions.data[0].details
+            promotions: promotions.data
         }
     }
 
     render() {
         let product = this.props.product
         let promotions = this.props.promotions
-        let tooltipContent = this.props.tooltipContent
 
         return (
             <div className="t-product-details" itemScope itemType="http://schema.org/Product">
