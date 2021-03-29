@@ -4,29 +4,29 @@ import Helmet from 'react-helmet'
 import {pluckIds} from '../../utils/utils'
 import {Tooltip, Spinner, Text} from '@chakra-ui/react'
 
-// const promotionTooltip = () => {
-//     const [promotionDetails, setPromotionDetails] = useState()
-//     const onHoverHandler = () => {
-//         if (promotionDetails) {
-//             return
-//         }
-//         const getPromotionDetails = async () => {
-//             // api will have to be created before have because we aren't in `getProps`
-//             const promotion = await api.shopperPromotions.getPromotions({
-//                 parameters: {ids: product.productPromotions[0].promotionId}
-//             })
-//             setPromotionDetails(promotion.details)
-//         }
-//         getPromotionDetails()
-//     }
-//     return (
-//         <div>
-//             <Tooltip label={promotionDetails || <Spinner />} onOpen={onHoverHandler}>
-//                 <Text>Show Promo</Text>
-//             </Tooltip>
-//         </div>
-//     )
-// }
+const promotionTooltip = () => {
+    const [promotionDetails, setPromotionDetails] = useState()
+    const onHoverHandler = () => {
+        if (promotionDetails) {
+            return
+        }
+        const getPromotionDetails = async () => {
+            // api will have to be created before have because we aren't in `getProps`
+            const promotion = await api.shopperPromotions.getPromotions({
+                parameters: {ids: product.productPromotions[0].promotionId}
+            })
+            setPromotionDetails(promotion.details)
+        }
+        getPromotionDetails()
+    }
+    return (
+        <div>
+            <Tooltip label={promotionDetails || <Spinner />} onOpen={onHoverHandler}>
+                <Text>Show Promo</Text>
+            </Tooltip>
+        </div>
+    )
+}
 
 class ProductDetails extends React.Component {
     constructor(props) {
